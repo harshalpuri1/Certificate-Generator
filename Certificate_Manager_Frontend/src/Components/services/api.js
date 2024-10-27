@@ -81,10 +81,31 @@ const logoutUser = async () => {
   }
 };
 
+const forgotPassword = async (body) => {
+  try {
+    const response = await apiInstance.get(constants.apiName.forgotpsw, body);
+    return response.data ? response.data : response;
+  } catch (error) {
+    return error.data ? error.data : error;
+  }
+};
+
+const verifyOtp = async (email) => {
+  try {
+    const response = await apiInstance.put(constants.apiName.forgotpsw, email);
+    return response.data ? response.data : response;
+  } catch (error) {
+    return error.data ? error.data : error;
+  }
+};
+
+
 const api = {
   registerUser,
   loginUser,
-  logoutUser
+  logoutUser,
+  forgotPassword,
+  verifyOtp
 };
 
 export default api;

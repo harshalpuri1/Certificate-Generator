@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./CertificatePage.css";
 import strings from "../utils/Certificatepage.json";
 import uploadicon from "../assets/images/Download-icon.png";
+import cancel from "../assets/images/cancel.png";
 import template1 from "../assets/images/template1.png";
 import template2 from "../assets/images/template2.png";
 import template3 from "../assets/images/template3.png";
@@ -14,6 +15,9 @@ import template9 from "../assets/images/template9.png";
 import template10 from "../assets/images/template10.png";
 import template11 from "../assets/images/template11.png";
 import template12 from "../assets/images/template12.png";
+import template13 from "../assets/images/template13.png";
+import template14 from "../assets/images/template14.png";
+import template15 from "../assets/images/template15.png";
 import Download from "../downloadPop/DownloadPop";
 import AddIcon from "../assets/images/add.png";
 import { toast } from "react-toastify";
@@ -37,6 +41,9 @@ const templateImages = [
   template10,
   template11,
   template12,
+  template13,
+  template14,
+  template15,
 ];
 
 const Certificate = () => {
@@ -57,45 +64,30 @@ const Certificate = () => {
 
   useEffect(() => {
     const extractNamesFromURL = () => {
-        const nameString = namesParams.get("names");
-        if (nameString) {
-            const namesArray = nameString.split(",").map((name) => name.trim());
-            setNames(namesArray);
-            if (namesArray.length > 0) {
-                setRecipientName(namesArray[0]);
-            }
-        } 
+      const nameString = namesParams.get("names");
+      if (nameString) {
+        const namesArray = nameString.split(",").map((name) => name.trim());
+        setNames(namesArray);
+        if (namesArray.length > 0) {
+          setRecipientName(namesArray[0]);
+        }
+      }
     };
 
     if (namesParams && namesParams.has("names")) {
-        extractNamesFromURL();
+      extractNamesFromURL();
     }
-}, [namesParams]);
+  }, [namesParams]);
 
-const downloadAsPDF = async () => {
-  if (names.length === 0) {
-    toast.error(strings.noRecipientNames); 
-    return;
-  }
-  const toastId = toast.loading(strings.genCertificate);
-  try {
-    if (names.length === 1) {
-      const recipientName = names[0];
-      document.querySelector(".recipient-name").innerText = recipientName;
-      const certificateElement = document.querySelector(".certificate-manager");
-      const scale = 4;
-      const canvas = await html2canvas(certificateElement, {
-        useCORS: true,
-        scale: scale,
-      });
-
-      const image = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("landscape");
-      pdf.addImage(image, "PNG", 0, 0, 300, 210);
-      pdf.save(`${recipientName} certificate.pdf`);
-    } else {
-      const zip = new JSZip();
-      for (const recipientName of names) {
+  const downloadAsPDF = async () => {
+    if (names.length === 0) {
+      toast.error(strings.noRecipientNames);
+      return;
+    }
+    const toastId = toast.loading(strings.genCertificate);
+    try {
+      if (names.length === 1) {
+        const recipientName = names[0];
         document.querySelector(".recipient-name").innerText = recipientName;
         const certificateElement = document.querySelector(
           ".certificate-manager"
@@ -109,73 +101,124 @@ const downloadAsPDF = async () => {
         const image = canvas.toDataURL("image/png");
         const pdf = new jsPDF("landscape");
         pdf.addImage(image, "PNG", 0, 0, 300, 210);
+        pdf.save(`${recipientName} certificate.pdf`);
+      } else {
+        const zip = new JSZip();
+        for (const recipientName of names) {
+          document.querySelector(".recipient-name").innerText = recipientName;
+          const certificateElement = document.querySelector(
+            ".certificate-manager"
+          );
+          const scale = 4;
+          const canvas = await html2canvas(certificateElement, {
+            useCORS: true,
+            scale: scale,
+          });
 
-        const pdfBlob = pdf.output("blob");
-        zip.file(`${recipientName} certificate.pdf`, pdfBlob);
+          const image = canvas.toDataURL("image/png");
+          const pdf = new jsPDF("landscape");
+          pdf.addImage(image, "PNG", 0, 0, 300, 210);
+
+          const pdfBlob = pdf.output("blob");
+          zip.file(`${recipientName} certificate.pdf`, pdfBlob);
+        }
+
+        await zip.generateAsync({ type: "blob" }).then((content) => {
+          saveAs(content, "Certificates.zip");
+        });
       }
-
-      await zip.generateAsync({ type: "blob" }).then((content) => {
-        saveAs(content, "Certificates.zip");
+      toast.update(toastId, {
+        render: strings.certificateGenSucc,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
+    } catch (error) {
+      toast.update(toastId, {
+        render: strings.errGenCertificate,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
       });
     }
-    toast.update(toastId, { render: strings.certificateGenSucc, type: "success", isLoading: false, autoClose:3000 });
-  } catch (error) {
-    toast.update(toastId, { render: strings.errGenCertificate, type: "error", isLoading: false, autoClose:3000 });
-  }
-};
+  };
 
-const downloadAsImage = async () => {
-  if (names.length === 0) {
-    toast.error(strings.noRecipientNames); 
-    return;
-  }
+  const downloadAsImage = async () => {
+    if (names.length === 0) {
+      toast.error(strings.noRecipientNames);
+      return;
+    }
 
-  const toastId = toast.loading(strings.genCertificate);
-  try {
-    if (names.length === 1) {
-      const recipientName = names[0];
-      document.querySelector(".recipient-name").innerText = recipientName;
-      const certificateElement = document.querySelector(".certificate-manager");
-
-      const canvas = await html2canvas(certificateElement, { useCORS: true, scale: 4 });
-
-      const link = document.createElement("a");
-      link.download = `${recipientName} certificate.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    } else {
-      const zip = new JSZip();
-      for (const recipientName of names) {
+    const toastId = toast.loading(strings.genCertificate);
+    try {
+      if (names.length === 1) {
+        const recipientName = names[0];
         document.querySelector(".recipient-name").innerText = recipientName;
-        const certificateElement = document.querySelector(".certificate-manager");
+        const certificateElement = document.querySelector(
+          ".certificate-manager"
+        );
 
-        const canvas = await html2canvas(certificateElement, { useCORS: true, scale: 4 });
+        const canvas = await html2canvas(certificateElement, {
+          useCORS: true,
+          scale: 4,
+        });
 
-        const imageBlob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
-        zip.file(`${recipientName} certificate.png`, imageBlob);
+        const link = document.createElement("a");
+        link.download = `${recipientName} certificate.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      } else {
+        const zip = new JSZip();
+        for (const recipientName of names) {
+          document.querySelector(".recipient-name").innerText = recipientName;
+          const certificateElement = document.querySelector(
+            ".certificate-manager"
+          );
+
+          const canvas = await html2canvas(certificateElement, {
+            useCORS: true,
+            scale: 4,
+          });
+
+          const imageBlob = await new Promise((resolve) =>
+            canvas.toBlob(resolve, "image/png")
+          );
+          zip.file(`${recipientName} certificate.png`, imageBlob);
+        }
+
+        await zip.generateAsync({ type: "blob" }).then((content) => {
+          saveAs(content, "Certificates.zip");
+        });
       }
-
-      await zip.generateAsync({ type: "blob" }).then((content) => {
-        saveAs(content, "Certificates.zip");
+      toast.update(toastId, {
+        render: strings.certificateGenSucc,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
+    } catch (error) {
+      toast.update(toastId, {
+        render: strings.errGenCertificate,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
       });
     }
-    toast.update(toastId, { render: strings.certificateGenSucc, type: "success", isLoading: false , autoClose:3000 });
-  } catch (error) {
-    toast.update(toastId, { render: strings.errGenCertificate, type: "error", isLoading: false, autoClose:3000 });
-  }
-};
-
+  };
 
   const addName = (name) => {
     if (name.trim()) {
       setNames((prevNames) => [...prevNames, name]);
     }
   };
-  
+
+  const removeName = (index) => {
+    setNames((prevNames) => prevNames.filter((_, i) => i !== index));
+  };
+
   useEffect(() => {
     setRecipientName("");
   }, [names]);
-
 
   const handlePress = async () => {
     const certificateElement = document.querySelector(".certificate-manager");
@@ -267,7 +310,9 @@ const downloadAsImage = async () => {
           {templateImages.map((template, index) => (
             <div
               key={index}
-              className="template-box"
+              className={`template-box ${
+                selectedTemplate === template ? "active" : ""
+              }`}
               onClick={() => handleTemplateClick(template)}
             >
               <img src={template} alt={`template ${index + 1}`} />
@@ -328,7 +373,22 @@ const downloadAsImage = async () => {
                 src={AddIcon}
               />
             </div>
-
+            {names.length > 0 && (
+              <div className="label-box">
+                {names.map((name, index) => (
+                  <div key={index} className="name-chip">
+                    {name}
+                    <button onClick={() => removeName(index)}>
+                      <img
+                        className="remove-name-button"
+                        alt="cancel"
+                        src={cancel}
+                      />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="form-group">
               <div className="label-box">{strings.descriptionLabel}</div>
               <textarea
@@ -346,7 +406,7 @@ const downloadAsImage = async () => {
                 type="date"
                 id="date"
                 placeholder="Enter date"
-                className="form-input hide-date-icon"
+                className="form-input"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
               />

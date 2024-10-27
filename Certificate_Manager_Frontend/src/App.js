@@ -7,15 +7,16 @@ import "./App.css";
 import { AppRoutes } from "./routes/AppRoutes";
 import Settings from "./Components/settings/Settings";
 import routes from "./Components/utils/App.json";
+import ForgotPassword from "./Components/forgotPasspg/ForgotPassword";
 
 function App() {
   return (
     <HashRouter>
       <AppRoutes />
       <Routes>
-        <Route path={routes.main} element={<LoginPage />} />
         <Route path={routes.signin} element={<LoginPage />} />
         <Route path={routes.signup} element={<SignUp />} />
+        <Route path={routes.forgotpass} element={<ForgotPassword />} />
         <Route path={routes.certificate} element={<Certificate />} />
         <Route path={routes.settings} element={<Settings />} />
       </Routes>

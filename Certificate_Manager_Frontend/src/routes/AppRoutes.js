@@ -10,6 +10,13 @@ export const AppRoutes = () => {
     const token = localStorage.getItem(constants.localStorage.token);
     if (token && location.pathname === constants.navigationLink.loginLink) {
       nav(constants.navigationLink.certificate);
+    } else if (
+      !token &&
+      location.pathname ===
+        (constants.navigationLink.certificate ||
+          constants.navigationLink.settings)
+    ) {
+      nav(constants.navigationLink.loginLink);
     }
   }, [location.pathname, nav]);
 

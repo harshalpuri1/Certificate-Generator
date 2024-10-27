@@ -12,22 +12,25 @@
     background-position: left;
 }
 
-.logo1{
+.logo1 {
     position: absolute;
     display: flex;
-    left: 250px;
+    left: 100px;
     top: 60px;
 }
-.logo1 img:nth-of-type(1){
-margin-top: 200px;
-height: 75px;
-width: 75px;
+
+.logo1 img:nth-of-type(1) {
+    margin-top: 40px;
+    height: 75px;
+    width: 75px;
 }
-.logo1 h1{
-margin-top: 58px;
-height: 39px;
-width: 106px;
+
+.logo1 h1 {
+    margin-top: 58px;
+    height: 39px;
+    width: 120px;
 }
+
 .loginbox {
     border: 1px solid rgb(192, 192, 192);
     background-color: #fff;
@@ -35,6 +38,9 @@ width: 106px;
     border-radius: 8px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
     width: 300px;
+    height: 500px;
+    position: absolute;
+    right: 10%;
 }
 
 .loginbox h2 {
@@ -42,6 +48,7 @@ width: 106px;
     font-size: 20px;
     text-align: left;
 }
+
 .loginbox h3 {
     font-weight: normal;
     font-size: 16px;
@@ -60,7 +67,8 @@ width: 106px;
     margin-bottom: 20px;
 
 }
-.formInput Img{
+
+.formInput Img {
     width: 20px;
     height: 20px;
     position: absolute;
@@ -77,7 +85,7 @@ width: 106px;
 }
 
 .formInput input {
-    width: 90%;
+    width: 275px;
     padding: 12px;
     border-radius: 4px;
     border: 1px solid #ccc;
@@ -98,10 +106,12 @@ width: 106px;
     margin-top: -10px;
     margin-bottom: 20px;
 }
-.formLinks{
-font-size: 14px;
-align-items: center;
+
+.formLinks {
+    font-size: 14px;
+    align-items: center;
 }
+
 .formLinks input[type="checkbox"] {
     margin-right: 8px;
 }
@@ -139,13 +149,15 @@ align-items: center;
     font-size: 10px;
     cursor: pointer;
 }
-.form-footer p{
+
+.form-footer p {
     margin-top: 31px;
     margin-bottom: 8px;
     font-size: 12px;
     text-align: center;
     color: #8a8989;
 }
+
 .form-footer span {
     color: #000000;
     text-decoration: none;
@@ -178,15 +190,38 @@ align-items: center;
     display: flex;
     align-items: center;
 }
-  
+
 .password-wrapper input {
     flex: 1;
 }
-  
+
 .password-wrapper span {
     position: absolute;
     right: 12px;
     cursor: pointer;
     font-size: 20px;
 }
-  
+
+@media (max-width: 780px) {
+    .logo1 {
+        top: 20px;
+    }
+
+    .loginbox {
+        right: auto;
+        left: auto;
+    }
+}
+
+@media (max-height: 760px) and (max-width: 780px) {
+    .logo1 {
+        position: absolute;
+        top: 10px;
+    }
+
+    .loginbox {
+        right: auto;
+        top: 150px;
+        bottom: 100px;
+    }
+}

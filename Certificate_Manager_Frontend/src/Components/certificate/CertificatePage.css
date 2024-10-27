@@ -131,7 +131,6 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   width: 760px;
-  height: 650px;
   margin-left: 4rem;
   margin-top: 10px;
   background-color: #F5F5F5;
@@ -140,25 +139,27 @@
 }
 
 .template-box {
-  width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   right: 20px;
   left: 20px;
   margin-left: 20px;
-  height: 150px;
-  border-radius: 10px;
+  height: 175px;
+  border-radius: 5px;
   overflow: hidden;
   cursor: pointer;
 }
 
 .template-box img {
-  width: 100%;
-  height: 100%;
+  height: 150px;
+  width: 210px;
   object-fit: cover;
 }
 
 .edit-certificate {
   position: absolute;
-  width: 33%;
+  width: 500px;
   top: 200px;
   left: 900px;
   right: 0;
@@ -186,31 +187,14 @@ h2 {
   font-family: 'Inter', sans-serif;
   font-size: 18px;
   color: #132A52;
-  margin-bottom: 5px;
-}
-
-.hide-date-icon::-webkit-calendar-picker-indicator {
-  opacity: 0;
-  cursor: pointer;
-}
-
-.hide-date-icon::-webkit-clear-button {
-  display: none;
-}
-
-.hide-date-icon::-ms-clear {
-  display: none;
-}
-
-.hide-date-icon::-ms-reveal {
-  display: none;
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
 .form-input {
   width: 94%;
   height: 45px;
   padding: 12px;
-  margin-top: 20px;
   border-radius: 10px;
   border: 1px solid #8A9CBD;
   padding-left: 15px;
@@ -245,7 +229,25 @@ textarea.form-input {
   height: 65px;
   object-fit: cover;
 }
+.add-name-icon{
+  position: absolute;
+  right: 5px;
+  bottom: 3px;
+  border-radius: 10px;
+  width: 65px;
+  height: 65px;
+  object-fit: cover;
+}
+.remove-name-button{
+  display: inline-flex;
+  margin-left: 10px;
+  height: fit-content;
+  width: 20px;
+}
+.name-chip >img{
 
+align-items: center;
+}
 .certificate-preview-container {
   position: relative;
   width: 800px;
@@ -352,10 +354,7 @@ textarea.form-input {
   position: relative;
 }
 
-.add-name-icon {
-  bottom: 20px;
-  position: absolute;
-  height: 30px;
-  right: 4px;
-  cursor: pointer;
+.template-box.active {
+  background-color: #E3EBF9;
+  border: 1px solid #647BA2;
 }

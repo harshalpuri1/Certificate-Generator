@@ -114,7 +114,7 @@ function LoginPage() {
                 <input type="checkbox" name={strings.username1} />
                 {strings.remember}
               </label>
-              <span onClick={() => nav("/")}>{strings.Forgot}</span>
+              <span onClick={() => nav(strings.forgotpass)}>{strings.Forgot}</span>
             </div>
             <button type="submit" className="btn">
               {strings.Login}

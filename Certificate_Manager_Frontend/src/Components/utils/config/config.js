@@ -21,7 +21,8 @@ const constants = {
   apiName: {
     signup: "/signup/user",
     login: "/login/user",
-    logout: "/logout/user"
+    logout: "/logout/user",
+    forgotpsw:"/forgot/send/otp"
   },
  localStorage: {
   authToken: "Authorization",

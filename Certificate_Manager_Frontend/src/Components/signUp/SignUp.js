@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./SignUp.css";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import strings from "../utils/SignUp.json";

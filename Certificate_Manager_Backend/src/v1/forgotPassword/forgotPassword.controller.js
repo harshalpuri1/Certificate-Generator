@@ -12,7 +12,7 @@ const {
 } = require("../utils/apiResponse");
 const { sendEmail, sendOtpEmail } = require("../utils/sendEmail");
 const { passwordGenerate, generateOtp } = require("../utils/generatePassword");
-const redis = require("../../../src/services/database/redis");
+const redis = require("../../services/database/redis");
 
 
 // function for send otp
